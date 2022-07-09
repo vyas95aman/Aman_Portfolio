@@ -1,0 +1,135 @@
+# The purpose of this code is to provide an individualized introduction of the user based on user inputs in a mad-lib style format.
+
+from datetime import date
+
+name = input("What is your name? ")
+while name == '':
+    name = input("Please enter your name: ")
+
+complete_college = input('Did you complete college? ')
+while complete_college == '':
+    complete_college = input('Please enter if you completeed college : ')
+
+school = input('Where did you attend school? ')
+while school == '':
+    school = input('Please enter where you attended school: ')
+
+alt_text = ''
+if complete_college.lower() == 'yes':
+    degree = input('What major is your degree in: ')
+    while degree == '':
+        degree = input('Please enter your degree: ')
+    text = f"You have a {degree} degree from {school}"
+else:
+    text = ''
+    alt_text = f'You must be smart, you attended {school}'
+    degree = 'none'
+
+colors = input('Do you prefer dark or light colors? ')
+while colors == '':
+    colors = input('Please enter if you prefer dark or light colors: ')
+
+adjective_1 = input('Enter an adjective: ')
+while adjective_1 == '':
+    adjective_1 = input('Please enter an adjective: ')
+
+describe = input('Describe yourself in two words, separated by a comma: ')
+while describe.find(',') == -1:
+    describe = input('Please describe yourself in two words, separated by a comma: ')
+
+birthday = input('Enter your date of birth (DDMMMYYYY): ')
+
+while len(birthday) != 9 or int(birthday[:2]) > 31 or int(birthday[5:]) > date.today().year:
+    birthday = input('Please enter a valid date of birth (DDMMMYYYY): ')
+
+year_born = int(birthday[5:])
+month_born = birthday[2:5].lower()
+date_born = int(birthday[:2])
+
+def month1(month_born):
+    match month_born: # Matches month with number value ### OR I can convert the string to all upper/lower case and then do match. 
+        case 'jan':
+            return 1
+        case 'feb':
+            return 2
+        case 'mar':
+            return 3
+        case 'apr':
+            return 4
+        case 'may':
+            return 5
+        case 'jun':
+            return 6
+        case 'jul':
+            return 7
+        case 'aug':
+            return 8
+        case 'sep':
+            return 9
+        case 'oct':
+            return 10
+        case 'nov':
+            return 11
+        case 'dec':
+            return 12
+        case _:
+            print('Invalid month used.')
+            birthday = input('Enter your date of birth (DDMMMYYYY): ')
+            while len(birthday) != 9 or int(birthday[:2]) > 31 or int(birthday[5:]) > date.today().year:
+                birthday = input('Please enter a valid date of birth in the following format (DDMMMYYYY): ')
+            month1(month_born)
+m = month1(month_born)
+
+birthdate = date(year_born, m, date_born)
+
+def age(birthdate):
+    today = date.today()
+    age = today.year - birthdate.year - ((today.month, today.day) < (birthdate.month, birthdate.day))
+    return age
+
+if m == 12:
+    astro_sign = 'Sagittarius' if (date_born < 22) else 'Capricorn'
+elif m == 1:
+    astro_sign = 'Capricorn' if (date_born < 20) else 'Aquarius'
+elif m == 2:
+    astro_sign = 'Aquarius' if (date_born < 19) else 'Pisces'
+elif m == 3:
+    astro_sign = 'Pisces' if (date_born < 21) else 'Aries'
+elif m == 4:
+    astro_sign = 'Aries' if (date_born < 20) else 'Taurus'
+elif m == 5:
+    astro_sign = 'Taurus' if (date_born < 21) else 'Gemini'
+elif m == 6:
+    astro_sign = 'Gemini' if (date_born < 21) else 'Cancer'
+elif m == 7:
+    astro_sign = 'Cancer' if (date_born < 23) else 'Leo'
+elif m == 8:
+    astro_sign = 'Leo' if (date_born < 23) else 'Virgo'
+elif m == 9:
+    astro_sign = 'Virgo' if (date_born < 23) else 'Libra'
+elif m == 10:
+    astro_sign = 'Libra' if (date_born < 23) else 'Scorpio'
+elif m == 11:
+    astro_sign = 'Scorpio' if (date_born < 22) else 'Sagittarius'
+
+
+if colors == 'dark':
+    anti_color = 'light'
+else: 
+    anti_color = 'dark'
+
+
+index = describe.find(',')
+describe_1 = describe[ : index]
+describe_2 = describe[(index + 2) : ]
+
+
+##----------------------------------------------------------------------------------------------------------------------------##
+# Madlib Text:
+
+madlib = f"Hello, {name}! Welcome to the world of coding! \n\
+My job is to help you get to know yourself. Let's get started! \n\
+You were born on {birthdate}, therefore you are {age(birthdate)} years old today. Oh, also you are a {astro_sign}, if you belive in zodiac signs! {text}{alt_text}. You like {colors} shades of color, so you must hate {anti_color}er colors. Just a computer making a {adjective_1.lower()} assumption! You say you are {describe_1} and {describe_2}, even though computer programs may not agree."
+
+print()
+print(madlib)
